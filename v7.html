@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>营养素消化 · 对错大挑战</title>
+  <style>
+    :root{--ink:#14233b;--muted:#6e7c91;--paper:#fffdf8;--line:#e7e8ec;--accent:#b51e32;--accent2:#f6c15b;--ok:#2f9b6a;--bad:#c85b50;--shadow:0 18px 60px #16233b16;--radius:24px}
+    *{box-sizing:border-box} body{margin:0;background:#f3f5f8;color:var(--ink);font-family:ui-rounded,"SF Pro Rounded","PingFang SC",system-ui,sans-serif;min-height:100vh}
+    button{font:inherit;border:0;cursor:pointer} .app{min-height:100vh;display:flex;justify-content:center;padding:28px 18px 112px}.shell{width:min(1060px,100%);position:relative}
+    .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}.brand{display:flex;align-items:center;gap:12px}.crest{width:45px;height:45px;display:grid;place-items:center;border-radius:14px;background:var(--accent);color:white;font-weight:900;letter-spacing:-2px;box-shadow:0 8px 20px #b51e3235}.brand b{font-size:15px}.brand span{display:block;color:var(--muted);font-size:11px;margin-top:2px}.tag{font-size:12px;color:var(--accent);background:#fff0ee;border-radius:99px;padding:9px 13px;font-weight:700}
+    .hero{display:grid;grid-template-columns:1.06fr .94fr;gap:24px;align-items:stretch}.hero-copy,.hero-art,.game-card,.result-card{background:var(--paper);border:1px solid #fff;box-shadow:var(--shadow);border-radius:var(--radius)}.hero-copy{padding:48px 44px;display:flex;flex-direction:column;justify-content:center;min-height:400px}.eyebrow{color:var(--accent);font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;margin-bottom:15px}.hero h1{font-size:clamp(36px,5vw,62px);letter-spacing:-.06em;line-height:1.03;margin:0 0 18px}.hero h1 em{font-style:normal;color:var(--accent)}.hero p{color:var(--muted);line-height:1.8;margin:0 0 25px;font-size:15px}.meta{display:flex;gap:9px;flex-wrap:wrap}.meta span{background:#f2f3f5;padding:8px 11px;border-radius:10px;font-size:12px;color:#56657b}.primary{background:var(--accent);color:#fff;padding:15px 22px;border-radius:13px;font-weight:800;box-shadow:0 10px 22px #b51e3230;transition:.2s}.primary:hover{transform:translateY(-2px);filter:brightness(1.05)}.secondary{background:#f3f5f8;color:var(--ink);padding:13px 18px;border-radius:12px;font-weight:700}
+    .hero-art{position:relative;overflow:hidden;min-height:400px;background:linear-gradient(145deg,#b51e32 0%,#7f1728 100%);color:#fff;padding:34px}.hero-art:before,.hero-art:after{content:"";position:absolute;border:1px solid #ffffff33;border-radius:50%;width:370px;height:370px;right:-100px;top:-85px}.hero-art:after{width:220px;height:220px;right:85px;top:90px}.art-label{font-size:12px;letter-spacing:.14em;opacity:.75}.art-title{font-size:30px;line-height:1.2;font-weight:900;max-width:240px;margin-top:12px;position:relative;z-index:1}.orbit{position:absolute;inset:0;display:grid;place-items:center}.molecule{position:relative;width:180px;height:180px;border:2px dashed #ffffff70;border-radius:50%;z-index:1}.molecule:before,.molecule:after{content:"";position:absolute;background:var(--accent2);border-radius:50%;box-shadow:0 0 0 9px #f6c15b25}.molecule:before{width:75px;height:75px;left:52px;top:52px}.molecule:after{width:25px;height:25px;right:-10px;top:28px}.atom{position:absolute;width:19px;height:19px;border-radius:50%;background:#ffdca0;box-shadow:0 0 0 7px #ffdca025}.a1{left:-9px;top:75px}.a2{right:28px;bottom:-9px}.a3{left:26px;bottom:14px}.art-foot{position:absolute;bottom:28px;font-size:12px;opacity:.8}
+    .game{display:none}.game-card{padding:32px;max-width:760px;margin:0 auto}.game-head{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px}.progress-wrap{flex:1}.progress-label{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;margin-bottom:9px}.progress{height:8px;background:#edf0f3;border-radius:9px;overflow:hidden}.progress i{display:block;height:100%;background:var(--accent);border-radius:9px;transition:.35s}.score{background:#fff3e6;color:#9b5c10;border-radius:12px;padding:11px 13px;font-weight:800;font-size:13px}.question-kicker{color:var(--accent);font-size:12px;font-weight:800;margin-bottom:10px}.question{font-size:clamp(24px,4vw,38px);letter-spacing:-.045em;line-height:1.25;margin:0 0 25px}.answers{display:grid;gap:12px}.answer{display:flex;align-items:center;gap:13px;background:#f7f8fa;border:1px solid transparent;border-radius:16px;padding:17px 16px;text-align:left;transition:.2s;color:var(--ink)}.answer:hover{border-color:#ddb0b5;background:#fff}.answer .letter{width:28px;height:28px;border-radius:9px;background:#fff;color:var(--accent);display:grid;place-items:center;font-size:12px;font-weight:900;flex:0 0 auto}.answer.selected{border-color:var(--accent);background:#fff5f3}.answer.correct{background:#eaf8f0;border-color:#7dc8a0}.answer.wrong{background:#fff0ed;border-color:#e5a39d}.answer.dim{opacity:.48}.feedback{display:none;margin-top:22px;border-radius:17px;padding:18px;background:#f5f7fa}.feedback.show{display:block}.feedback.ok{background:#eaf8f0}.feedback.bad{background:#fff1ed}.feedback h3{font-size:15px;margin:0 0 7px}.feedback p{font-size:13px;color:#59687e;line-height:1.7;margin:0}.feedback .next{margin-top:15px}.hint{margin-top:22px;color:var(--muted);font-size:12px;text-align:center}
+    .result{display:none}.result-card{max-width:760px;margin:0 auto;padding:45px;text-align:center}.result-card .medal{font-size:58px;margin-bottom:12px}.result-card h2{font-size:38px;letter-spacing:-.06em;margin:0 0 10px}.result-card p{color:var(--muted);line-height:1.7}.result-score{color:var(--accent);font-size:54px;font-weight:900;margin:25px 0 4px}.result-actions{display:flex;gap:10px;justify-content:center;margin-top:25px;flex-wrap:wrap}.draw-box{display:none;max-width:500px;margin:20px auto 0;background:#fff7e8;padding:19px;border-radius:18px;color:#845e26}.draw-box.show{display:block}.draw-box b{display:block;margin-bottom:7px;color:#6d4615}.draw-box span{font-size:13px;line-height:1.6}
+    .switcher{position:fixed;z-index:10;bottom:22px;left:50%;transform:translateX(-50%);background:#17243a;color:#fff;border-radius:99px;padding:8px 9px;display:flex;align-items:center;gap:11px;box-shadow:0 12px 30px #16233b33;font-size:12px}.switcher button{background:#ffffff18;color:#fff;border-radius:50%;width:28px;height:28px}.switcher button:hover{background:#ffffff30}.switcher strong{font-size:11px;letter-spacing:.03em;min-width:145px;text-align:center}.switcher small{display:block;color:#b5c1d1;font-weight:400;margin-top:2px}
+    body.vB{--accent:#087f8c;--paper:#fbfffe;--accent2:#f4bc55;background:#eaf5f4}.vB .hero-art{background:linear-gradient(145deg,#087f8c,#095d6f)}.vB .hero-copy,.vB .game-card,.vB .result-card{border-radius:18px}.vB .hero-copy{min-height:400px}.vB .answer .letter{color:#087f8c}.vB .hero h1 em{color:#087f8c}.vB .tag{color:#087f8c;background:#daf2ef}.vB .hero{grid-template-columns:.8fr 1.2fr}.vB .hero-art{order:-1}
+    body.vC{--accent:#e3792c;--paper:#fffaf3;--ink:#29231e;background:#f5eee4}.vC .hero-copy{border-radius:36px 12px 12px 12px;position:relative;z-index:2;padding:54px 48px 68px;background:rgba(255,250,243,.96)}.vC .hero-art{border-radius:12px 0 0 48px;background:#2e3a34 url('nutrition-hero-v7.png') center/cover no-repeat;min-height:560px;position:sticky;top:22px;overflow:visible;box-shadow:0 24px 70px #9a6a3124}.vC .hero-art:before{display:block;content:"";position:absolute;inset:0;border-radius:12px 0 0 48px;background:linear-gradient(90deg,#2e3a3470 0%,transparent 48%),linear-gradient(0deg,#2e3a3448 0%,transparent 50%);border:1px solid #ffffff4a;pointer-events:none}.vC .hero-art:after{display:block;content:"";position:absolute;left:-34px;bottom:56px;width:112px;height:112px;background:#fff7ea;border:1px solid #2e3a3422;box-shadow:7px 9px 0 #e3792c;transform:rotate(-7deg);z-index:3}.vC .hero h1 em{color:#e3792c}.vC .crest{background:#2e3a34}.vC .tag{color:#9a531d;background:#fff0de}.vC .answer{border-radius:10px;background:#fff}.vC .answer .letter{color:#e3792c;background:#fff0de}.vC .game-card,.vC .result-card{border-radius:12px;box-shadow:0 16px 45px #9a6a3115}.vC .hero-art .orbit{display:none}.vC .hero-art .art-label,.vC .hero-art .art-title,.vC .hero-art .art-foot{z-index:2}.vC .hero-art .art-title{font-family:Georgia,"Songti SC",serif;text-shadow:0 2px 18px #0005}.vC .art-stamp{position:absolute;right:-18px;top:72px;z-index:4;background:#e3792c;color:#fff;padding:12px 13px;font-size:11px;letter-spacing:.12em;transform:rotate(8deg);box-shadow:5px 5px 0 #2e3a34}.vC .art-note{position:absolute;left:-30px;top:145px;z-index:4;background:#fff6dc;color:#594a38;padding:13px 15px;width:160px;font-size:11px;line-height:1.55;box-shadow:0 9px 20px #37281724;transform:rotate(-5deg)}.vC .art-note:before{content:"";position:absolute;top:-11px;left:22px;width:54px;height:18px;background:#e5b56b88;transform:rotate(-8deg)}.vC .hero-copy:after{content:"JLU / FS";position:absolute;right:-30px;bottom:26px;z-index:4;background:#2e3a34;color:#fff;padding:10px 12px;font-size:10px;letter-spacing:.18em;transform:rotate(4deg);box-shadow:4px 4px 0 #e3792c}.vC .meta{position:relative;z-index:3;margin-bottom:-28px}.vC .meta span:nth-child(2){transform:translateY(9px);background:#2e3a34;color:#fff}.vC .primary{background:#e3792c;box-shadow:5px 5px 0 #2e3a34}.vC .question-kicker{font-family:Georgia,"Songti SC",serif;font-style:italic}.vC .feedback{border-left:6px solid #e3792c;box-shadow:6px 7px 0 #f1d7bd}.vC .result-card{position:relative}.vC .result-card:before{content:"FIELD NOTE 02";position:absolute;right:24px;top:24px;font-size:10px;letter-spacing:.12em;color:#a96b3f;transform:rotate(6deg)}
+    @media(max-width:720px){.app{padding:18px 12px 100px}.topbar{margin-bottom:16px}.hero{display:flex;flex-direction:column}.hero-copy{padding:30px 25px;min-height:auto}.hero-art{min-height:300px;order:0!important}.game-card,.result-card{padding:24px 18px}.game-head{align-items:flex-start}.score{padding:9px}.switcher strong{min-width:128px}.hero h1{font-size:42px}.vC .hero-art{position:relative;top:auto;margin-right:-12px;min-height:420px;border-radius:12px 0 0 36px}.vC .hero-copy{padding:34px 25px 58px}.vC .art-note{left:12px;top:120px}.vC .art-stamp{right:14px;top:46px}.vC .hero-copy:after{right:10px}.vC .meta{margin-bottom:-18px}}
+    /* Design-taste frontend pass: editorial field notes for JLU Food Science */
+    body.vC{background:#f5efe5;color:#201c1d;font-family:Literata,Georgia,"Songti SC",serif;min-height:100svh}
+    body.vC .app{min-height:100svh;padding:34px 24px 100px}
+    body.vC .shell{width:min(1160px,100%)}
+    body.vC .topbar{margin-bottom:76px}
+    body.vC .crest{border-radius:0;background:#2e3a34;box-shadow:none!important;font-family:Literata,Georgia,serif}
+    body.vC .brand b{font-family:Literata,Georgia,serif;font-weight:600}
+    body.vC .brand span{font-size:12px;color:#6b5c5d}
+    body.vC .tag{border-radius:0;background:#402431;color:#fffaf1;font-size:13px;font-weight:500}
+    body.vC .hero{grid-template-columns:42% 58%;min-height:650px;align-items:end;gap:0}
+    body.vC .hero-copy{background:#fffaf1;border-radius:0;padding:0 58px 42px 0;min-height:430px;justify-content:flex-end;box-shadow:none!important;border:0}
+    body.vC .hero h1{font-family:Literata,Georgia,serif;font-size:clamp(58px,7.2vw,105px);letter-spacing:-.06em;line-height:.94;font-weight:500;margin:0 0 28px}
+    body.vC .hero h1 em{color:#201c1d}
+    body.vC .hero p{color:#201c1d;font-size:18px;line-height:1.62;max-width:31ch}
+    body.vC .meta span{border-radius:3px;background:#eadfce;color:#201c1d;font-size:13px;padding:9px 11px}
+    body.vC .meta span:nth-child(2){background:#402431;color:#fff}
+    body.vC .primary{border-radius:3px;background:#e3792c;color:#241a1b;box-shadow:none!important;font-weight:600}
+    body.vC .secondary{border-radius:3px;background:#2e3a34;color:#fff}
+    body.vC .hero-art{min-height:620px;border-radius:18px 0 0 0;background-color:#2e3a34;background-image:url('nutrition-hero-v7.png')!important;background-size:cover;background-position:center;box-shadow:none!important;position:sticky;top:24px}
+    body.vC .hero-art:before{background:#2e3a3440!important;border:0!important;border-radius:0}
+    body.vC .hero-art:after{box-shadow:none!important;border:0!important;background:#fff7ea}
+    body.vC .art-title{font-family:Literata,Georgia,serif;font-size:34px;font-weight:600;text-shadow:none}
+    body.vC .art-label,.vC .art-foot{font-size:13px;letter-spacing:0;opacity:1}
+    body.vC .art-note{border-radius:0;box-shadow:none!important;background:#fff6dc;color:#594a38;font-size:12px}
+    body.vC .art-stamp{box-shadow:none!important;border-radius:0;background:#e3792c;color:#241a1b}
+    body.vC .game{min-height:100svh;padding:120px 0}
+    body.vC .game-card{max-width:780px;padding:0 0 30px;background:transparent;border:0;box-shadow:none!important;border-radius:0}
+    body.vC .game-head{margin-bottom:64px}
+    body.vC .progress{height:8px;border-radius:0;background:#ddcfbf}
+    body.vC .progress i{border-radius:0;background:#e3792c}
+    body.vC .score{border-radius:0;background:#402431;color:#fff}
+    body.vC .question-kicker{font-family:Literata,Georgia,serif;font-size:15px;letter-spacing:0;color:#e3792c;font-style:italic}
+    body.vC .question{font-family:Literata,Georgia,serif;font-size:clamp(34px,4.6vw,66px);line-height:1.04;font-weight:500;max-width:15ch}
+    body.vC .answers{grid-template-columns:1fr 1fr;gap:12px}
+    body.vC .answer{border-radius:0;border:0;background:#fffaf1;box-shadow:none!important;padding:19px 16px;transition:transform .2s ease,background .2s ease}
+    body.vC .answer:hover{border:0;background:#f0e4d4;transform:translateY(-3px)}
+    body.vC .answer .letter{border-radius:0;background:#402431;color:#fff}
+    body.vC .answer.correct{background:#d7eadf}.vC .answer.wrong{background:#f0d3c9}
+    body.vC .feedback{border-radius:0;background:#eadfce;box-shadow:none!important;border-left:7px solid #e3792c}
+    body.vC .feedback.ok{background:#d7eadf;border-left-color:#286e52}.vC .feedback.bad{background:#f0d3c9;border-left-color:#a84135}
+    body.vC .feedback p{font-size:16px;color:#201c1d}
+    body.vC .hint{font-size:13px;color:#6b5c5d;text-align:left}
+    body.vC .result{min-height:100svh;padding:150px 0}
+    body.vC .result-card{max-width:780px;padding:56px;background:#fffaf1;border:0;border-radius:0;box-shadow:none!important;text-align:left}
+    body.vC .result-card .medal{font-size:0}.vC .result-card .medal:after{content:"FIELD NOTE";font-size:13px;color:#e3792c;letter-spacing:.08em}
+    body.vC .result-card h2{font-family:Literata,Georgia,serif;font-size:clamp(42px,6vw,76px);line-height:.95;font-weight:500}
+    body.vC .result-card p{font-size:18px;color:#201c1d;max-width:38ch}
+    body.vC .result-score{font-size:68px;color:#e3792c}.vC .draw-box{border-radius:0;background:#eadfce;color:#201c1d}.vC .draw-box b{color:#402431}
+    body.vC .switcher{display:none}
+    /* Final balance pass: content first, one restrained overlap */
+    body.vC .question{font-size:clamp(28px,3.2vw,46px);line-height:1.13;max-width:18ch;letter-spacing:-.035em}
+    body.vC .hero-art:after{display:none}
+    body.vC .hero-copy:after{display:none}
+    body.vC .art-stamp{right:16px;top:48px;transform:rotate(4deg);padding:9px 10px;font-size:10px}
+    body.vC .art-note{left:16px;top:128px;transform:rotate(-2deg);width:156px;padding:12px 13px}
+    body.vC .meta span:nth-child(2){transform:none}
+    @media(max-width:720px){body.vC .app{padding:22px 18px 80px}body.vC .topbar{margin-bottom:92px}body.vC .hero{display:flex;flex-direction:column;min-height:0}body.vC .hero-copy{order:2;padding:0 0 28px;min-height:0}body.vC .hero-art{order:1;position:relative;top:auto;margin-right:-18px;min-height:390px;border-radius:16px 0 0 0}body.vC .hero h1{font-size:16vw}body.vC .hero p{font-size:17px}body.vC .answers{grid-template-columns:1fr}body.vC .game{padding:82px 0}body.vC .game-card{padding:0}body.vC .question{font-size:8.5vw;max-width:100%;line-height:1.16}body.vC .art-note{left:12px;top:112px}body.vC .art-stamp{right:12px;top:36px}body.vC .result{padding:80px 0}body.vC .result-card{padding:32px 24px}body.vC .result-card h2{font-size:13vw}}
+    /* JLU Food Science blue edition */
+    body.vC{background:#edf3fb;color:#14284b}body.vC .tag{background:#0c2d5e;color:#fff}body.vC .hero-copy{background:#f9fbff}body.vC .hero h1{font-size:clamp(48px,5.5vw,80px);line-height:.98;letter-spacing:-.055em}body.vC .hero p{color:#14284b}body.vC .meta span{background:#dce8f5;color:#14284b}.vC .meta span:nth-child(2){background:#0c2d5e;color:#fff}body.vC .primary{background:#1d5797;color:#fff}.vC .primary:hover{background:#2c6fb5}body.vC .secondary{background:#0e3f7a;color:#fff}body.vC .hero-art{background-color:#0e3f7a;background-image:url('nutrition-hero-v7.png')!important}body.vC .hero-art:before{background:#0e3f7a45!important}body.vC .art-stamp{background:#d7a83e;color:#14284b}body.vC .art-note{display:none!important}body.vC .game{background:#edf3fb}body.vC .progress{background:#cbd9ea}.vC .progress i{background:#1d5797}body.vC .score{background:#0c2d5e}body.vC .question-kicker{color:#1d5797}.vC .question{color:#14284b}body.vC .answer{background:#f9fbff}.vC .answer:hover{background:#e2edf8}.vC .answer .letter{background:#0c2d5e}body.vC .answer.correct{background:#d8eee4}.vC .answer.wrong{background:#f2d8d2}body.vC .feedback{background:#dce8f5;border-left-color:#1d5797}.vC .feedback.ok{background:#d8eee4;border-left-color:#286e52}.vC .feedback.bad{background:#f2d8d2;border-left-color:#a84135}body.vC .quiz-mascot{position:absolute;width:176px;height:auto;right:-116px;top:66px;z-index:3;pointer-events:none}body.vC .game-card{position:relative}body.vC .result{background:#edf3fb}.vC .result-card{background:#f9fbff}.vC .result-score{color:#1d5797}.V .draw-box{background:#dce8f5}.vC .draw-box{background:#dce8f5}.vC .draw-box b{color:#0c2d5e}@media(max-width:720px){body.vC .hero h1{font-size:12vw}body.vC .quiz-mascot{width:112px;right:-4px;top:38px}body.vC .game-head{padding-right:68px}body.vC .hero-art{min-height:390px}}
+    /* Last refinement: continuous JLU field, quieter hero, single-line prompt */
+    body.vC .hero-copy{background:transparent!important}body.vC .hero h1{font-size:clamp(42px,4.6vw,68px)!important}body.vC .art-note{display:none!important}body.vC .question{white-space:nowrap;max-width:none;font-size:clamp(28px,3.2vw,46px)!important}body.vC .game-card{max-width:980px}body.vC .quiz-mascot{content:url('nutrition-student-v5.png');width:170px;right:-92px;top:58px}@media(max-width:720px){body.vC .hero h1{font-size:12vw!important}body.vC .question{white-space:nowrap;font-size:8.5vw!important;letter-spacing:-.07em}body.vC .quiz-mascot{width:108px;right:-3px;top:34px}}
+    /* Image-rich blue JLU pass */
+    body.vC .hero-art{background-image:url('nutrition-hero-v7.png')!important}
+    body.vC .quiz-mascot{content:url('nutrition-student-v5.png')!important}
+    body.vC .result-card{display:grid;grid-template-columns:minmax(0,1fr) 230px;gap:28px;align-items:center}
+    body.vC .result-visual{width:230px;max-width:100%;display:block;grid-column:2;grid-row:1 / span 5;align-self:center}
+    body.vC .result-card h2,body.vC .result-card p,body.vC .result-score,body.vC .draw-box,body.vC .result-actions{grid-column:1}
+    @media(max-width:720px){body.vC .result-card{display:block}body.vC .result-visual{width:180px;margin:0 auto 24px;display:block}body.vC .result-card h2{font-size:13vw}}
+    /* Final art direction: student-facing female volunteer and balanced-diet hero */
+    body.vC .hero-art{background-image:url('nutrition-hero-v7.png')!important}
+    body.vC .quiz-mascot{content:url('nutrition-student-v5.png')!important;transform:scaleX(-1);transform-origin:center bottom}
+    /* Responsive image clarity and viewport fit */
+    body.vC .hero-art{background-position:center right;background-blend-mode:normal}
+    body.vC .hero-art:before{background:rgba(14,63,122,.08)!important}
+    body.vC .hero-art .art-title,body.vC .hero-art .art-label,body.vC .hero-art .art-foot{ text-shadow:0 1px 8px rgba(0,0,0,.35)}
+    @media(min-width:721px){body.vC .hero-art{min-height:clamp(520px,62vw,700px)}body.vC .hero-copy{min-height:clamp(420px,52vw,590px)}}
+    @media(max-width:1100px) and (min-width:721px){body.vC .shell{width:100%}body.vC .hero{grid-template-columns:45% 55%}body.vC .hero-copy{padding-right:34px}body.vC .hero h1{font-size:clamp(42px,5vw,62px)}body.vC .hero p{font-size:16px}}
+    @media(max-width:720px){body.vC .app{padding-left:16px;padding-right:16px}body.vC .hero-art{background-position:62% center;background-size:cover;margin-right:-16px;min-height:390px}body.vC .hero-copy{padding-right:0}body.vC .hero h1{font-size:12vw;max-width:8ch}body.vC .hero p{max-width:36ch}body.vC .game-card,body.vC .result-card{width:100%}}
+    /* Mobile fit pass: no horizontal overflow, readable prompt, touch-friendly controls */
+    html,body{max-width:100%;overflow-x:hidden}
+    @media(max-width:720px){
+      body.vC .app{width:100%;padding:18px 14px 92px;overflow-x:hidden}
+      body.vC .topbar{align-items:flex-start;gap:12px;margin-bottom:30px;flex-wrap:wrap}
+      body.vC .brand{min-width:0;flex:1}
+      body.vC .brand b{font-size:13px;line-height:1.35}
+      body.vC .brand span{font-size:10px}
+      body.vC .tag{font-size:11px;padding:7px 9px;white-space:nowrap}
+      body.vC .hero{width:100%;gap:24px}
+      body.vC .hero-art{width:calc(100% + 14px);margin-right:-14px;min-height:300px;border-radius:14px 0 0 0;background-position:60% center}
+      body.vC .hero-art .art-title{font-size:26px}
+      body.vC .art-stamp{right:12px;top:34px;font-size:9px;padding:8px 9px}
+      body.vC .art-foot{left:20px;right:16px;bottom:20px;font-size:10px;line-height:1.4}
+      body.vC .hero-copy{width:100%;padding:0 0 18px;min-height:0}
+      body.vC .hero h1{font-size:clamp(38px,12vw,54px)!important;line-height:1;max-width:none;letter-spacing:-.07em}
+      body.vC .hero p{font-size:15px;line-height:1.7;max-width:none;margin-bottom:18px}
+      body.vC .meta{gap:6px}
+      body.vC .meta span{font-size:11px;padding:7px 9px}
+      body.vC .primary{min-height:46px;padding:12px 17px}
+      body.vC .game{width:100%;min-height:100svh;padding:48px 0 70px}
+      body.vC .game-card{width:100%;max-width:none;padding:0 2px 28px}
+      body.vC .game-head{gap:10px;margin-bottom:38px;padding-right:0}
+      body.vC .progress-label{font-size:11px}
+      body.vC .score{font-size:12px;padding:9px 10px;white-space:nowrap}
+      body.vC .quiz-mascot{width:94px;right:0;top:38px}
+      body.vC .question-kicker{font-size:13px;margin-bottom:9px}
+      body.vC .question{white-space:normal!important;max-width:100%!important;font-size:clamp(24px,7.2vw,32px)!important;line-height:1.28;letter-spacing:-.045em;margin-bottom:20px;padding-right:4px}
+      body.vC .answers{gap:9px}
+      body.vC .answer{min-height:52px;padding:13px 12px;gap:10px;font-size:14px;line-height:1.45}
+      body.vC .answer .letter{width:26px;height:26px;font-size:11px}
+      body.vC .feedback{margin-top:18px;padding:15px 14px}
+      body.vC .feedback p{font-size:13px;line-height:1.65}
+      body.vC .hint{text-align:left;font-size:11px;margin-top:17px}
+      body.vC .result{width:100%;padding:54px 0 80px}
+      body.vC .result-card{width:100%;padding:28px 20px;display:block}
+      body.vC .result-card .result-visual{width:min(170px,62vw);margin:0 auto 20px}
+      body.vC .result-card h2{font-size:clamp(32px,10vw,46px);line-height:1.05}
+      body.vC .result-card p{font-size:15px;line-height:1.7}
+      body.vC .result-score{font-size:54px;margin:20px 0 0}
+      body.vC .result-actions{justify-content:stretch;gap:8px}
+      body.vC .result-actions button{flex:1;min-width:0}
+    }
+    @media(max-width:360px){
+      body.vC .brand b{font-size:12px}
+      body.vC .tag{font-size:10px}
+      body.vC .hero h1{font-size:36px!important}
+      body.vC .quiz-mascot{width:82px}
+      body.vC .question{font-size:24px!important}
+    }
+    /* Result states: keep the failure title on one line and give each outcome its own visual */
+    body.vC .result-card h2{white-space:nowrap}
+    body.vC .result-visual{object-fit:contain;aspect-ratio:1;border-radius:0;background:transparent}
+    @media(max-width:720px){body.vC .result-card h2{font-size:clamp(32px,10vw,46px)!important;white-space:nowrap;letter-spacing:-.08em}}
+
+    /* Editorial food hero: the balanced meal is the page, information floats over it. */
+    body.vC .hero{display:block;position:relative;min-height:clamp(680px,78svh,860px);margin:0 -8px;overflow:visible}
+    body.vC .hero-art{position:absolute;inset:0;z-index:0;width:100%;min-height:100%;border-radius:32px 32px 120px 32px;background-image:url('nutrition-hero-v7.png')!important;background-size:cover;background-position:center right;overflow:hidden;box-shadow:0 22px 60px rgba(65,38,17,.2)}
+    body.vC .hero-art:before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:linear-gradient(90deg,rgba(255,248,231,.94) 0%,rgba(255,248,231,.72) 30%,rgba(255,248,231,.16) 59%,rgba(255,248,231,0) 76%)!important}
+    body.vC .hero-copy{position:relative;z-index:3;display:flex;align-items:flex-start;justify-content:flex-start;max-width:590px;min-height:clamp(680px,78svh,860px);padding:clamp(72px,9vw,122px) 0 150px clamp(20px,5vw,74px);background:transparent!important;border:0;box-shadow:none!important}
+    body.vC .hero-copy:before{content:"";position:absolute;left:0;top:54px;width:min(500px,55vw);height:420px;background:rgba(255,249,237,.58);filter:blur(14px);border-radius:0 0 160px 0;z-index:-1}
+    body.vC .hero h1{font-size:clamp(48px,6.2vw,84px)!important;max-width:8ch;line-height:.96;color:#3a211b;letter-spacing:-.065em;margin-bottom:24px}
+    body.vC .hero h1 em{color:#3a211b}
+    body.vC .hero p{max-width:30ch;color:#3a211b;font-size:17px;line-height:1.65}
+    body.vC .hero .primary{background:#d9532f;color:#fff;box-shadow:0 10px 22px rgba(94,37,17,.25);border-radius:999px;padding:14px 22px}
+    body.vC .meta{position:absolute;z-index:5;left:clamp(20px,5vw,74px);bottom:30px;display:flex;gap:10px;align-items:flex-end}
+    body.vC .meta span{background:rgba(255,252,244,.94);color:#38241e;border:1px solid rgba(111,75,44,.12);box-shadow:0 12px 28px rgba(70,35,15,.16);border-radius:16px;padding:12px 14px;font-size:12px;backdrop-filter:blur(12px)}
+    body.vC .meta span:nth-child(2){transform:translateY(-14px);background:#f8c44d;color:#38241e}
+    body.vC .meta span:nth-child(3){background:#e65a31;color:white}
+    body.vC .art-label{position:absolute;top:26px;left:30px;z-index:3;background:rgba(255,252,244,.9);color:#4f2e21;padding:8px 11px;border-radius:99px;font-size:11px;letter-spacing:.08em}
+    body.vC .art-title{position:absolute;right:34px;bottom:112px;z-index:3;color:#fff;font-size:clamp(26px,3vw,44px);text-shadow:0 2px 18px rgba(0,0,0,.25);text-align:right}
+    body.vC .art-foot{left:auto;right:30px;bottom:26px;z-index:3;color:#fff;font-size:11px;text-shadow:0 1px 8px #0008}
+    body.vC .art-stamp{z-index:6;right:clamp(24px,7vw,90px);top:34px;transform:rotate(2deg);background:#fffaf0;color:#15477f;border-radius:18px;box-shadow:0 16px 32px rgba(52,31,12,.18);padding:14px 16px;font-size:11px;letter-spacing:.06em}
+    body.vC .art-note,body.vC .hero-art .orbit{display:none!important}
+    @media(max-width:720px){
+      body.vC .hero{min-height:720px;margin:0 -2px}
+      body.vC .hero-art{min-height:720px;width:calc(100% + 24px);left:-12px;right:-12px;border-radius:24px 24px 84px 24px;background-position:62% center}
+      body.vC .hero-art:before{background:linear-gradient(180deg,rgba(255,248,231,.88) 0%,rgba(255,248,231,.4) 30%,rgba(255,248,231,.04) 57%,rgba(34,18,8,.22) 100%)!important}
+      body.vC .hero-copy{min-height:720px;padding:54px 18px 190px}
+      body.vC .hero-copy:before{left:0;top:28px;width:90%;height:320px;background:rgba(255,249,237,.48);filter:blur(12px)}
+      body.vC .hero h1{font-size:clamp(48px,13vw,62px)!important;max-width:8ch}
+      body.vC .hero p{font-size:16px;max-width:23ch}
+      body.vC .hero .primary{padding:13px 19px}
+      body.vC .meta{left:18px;right:18px;bottom:20px;gap:7px;flex-wrap:wrap;align-items:flex-end}
+      body.vC .meta span{font-size:11px;padding:10px 11px}
+      body.vC .meta span:nth-child(2){transform:none}
+      body.vC .art-label{left:18px;top:20px;font-size:10px}
+      body.vC .art-title{right:18px;bottom:126px;font-size:28px}
+      body.vC .art-foot{right:18px;bottom:96px;font-size:10px}
+      body.vC .art-stamp{right:16px;top:56px;font-size:9px;padding:11px 12px}
+    }
+
+    /* Quiet the hero image and carry its warm food palette into the quiz. */
+    body.vC .hero{min-height:clamp(640px,70svh,780px)}
+    body.vC .hero-art{min-height:100%;background-color:#ead7bd;background-repeat:no-repeat;background-size:cover;background-blend-mode:normal;box-shadow:0 16px 38px rgba(65,38,17,.13)}
+    body.vC .hero-art:after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:rgba(255,247,232,.16)}
+    body.vC .hero-copy{min-height:clamp(640px,70svh,780px)}
+    body.vC .hero h1{font-size:clamp(38px,4.6vw,66px)!important;max-width:none;white-space:nowrap;line-height:1;letter-spacing:-.08em;font-weight:800}
+    body.vC .hero h1 br{display:none}
+    body.vC .app{display:block;min-height:100svh;padding:0}
+    body.vC .shell{width:100%;max-width:none}
+    body.vC .topbar{position:absolute;z-index:10;top:0;left:0;right:0;margin:0;padding:22px clamp(18px,4vw,64px)}
+    body.vC .home{width:100vw;margin:0;min-height:100svh}
+    body.vC .hero{width:100vw;min-height:100svh;margin:0}
+    body.vC .hero-art{border-radius:0;min-height:100svh}
+    body.vC .hero-copy{min-height:100svh;padding:clamp(118px,16vh,170px) clamp(24px,7vw,110px) 150px;max-width:700px}
+    body.vC .topbar{background:rgba(255,250,241,.72);backdrop-filter:blur(12px)}
+    body.vC .hero-copy{width:min(58vw,700px);max-width:700px;margin:0;justify-content:center;align-items:flex-start;text-align:left;padding:190px clamp(24px,7vw,110px) 110px}
+    body.vC .hero h1{text-align:left;margin:0 0 28px}
+    body.vC .hero p{max-width:34ch;margin:0 0 16px;text-align:left;line-height:1.7}
+    body.vC .meta{position:relative;left:auto;bottom:auto;margin:16px 0 0;justify-content:flex-start;align-items:stretch;flex-wrap:nowrap}
+    body.vC .meta span{display:flex;align-items:center;height:40px;white-space:nowrap;transform:none!important}
+    body.vC .hero .primary{margin-top:18px!important}
+    body.vC .art-title{color:#38251e;background:rgba(255,249,237,.9);padding:12px 16px 14px;border-radius:18px;box-shadow:0 8px 18px rgba(47,27,12,.14);text-shadow:none}
+    body.vC .art-foot{background:#fff9ed;color:#38251e;padding:9px 12px;border-radius:999px;box-shadow:0 8px 18px rgba(47,27,12,.14);text-shadow:none;font-weight:700}
+
+    body.vC .game{background:#f4ead8;color:#38251e;border-top:1px solid rgba(111,75,44,.1)}
+    body.vC .game-card{background:transparent;color:#38251e}
+    body.vC .progress-label{color:#76553b}
+    body.vC .progress{background:#e4d2b9}
+    body.vC .progress i{background:#d9532f}
+    body.vC .score{background:#6f9b55;color:#fff8eb;box-shadow:0 8px 18px rgba(62,87,42,.2)}
+    body.vC .question-kicker{color:#c34f2d}
+    body.vC .question{color:#38251e}
+    body.vC .answer{background:#fffaf0;color:#38251e;border:1px solid rgba(111,75,44,.13);box-shadow:0 8px 18px rgba(74,46,25,.06)}
+    body.vC .answer:hover{background:#f8d36b;border-color:#dcae39}
+    body.vC .answer .letter{background:#d9532f;color:#fff}
+    body.vC .answer.correct{background:#dcebd1;border-color:#78a85f}
+    body.vC .answer.wrong{background:#f5d8c9;border-color:#d37a57}
+    body.vC .feedback{background:#fffaf0;color:#38251e;border-left-color:#d9532f;box-shadow:0 12px 24px rgba(74,46,25,.08)}
+    body.vC .feedback.ok{background:#dcebd1;border-left-color:#6f9b55}
+    body.vC .feedback.bad{background:#f5d8c9;border-left-color:#c34f2d}
+    body.vC .hint{color:#76553b}
+    body.vC .game .primary{background:#d9532f;color:#fff}
+    body.vC .game .secondary{background:#6f9b55;color:#fff}
+    @media(max-width:720px){
+      body.vC .topbar{padding:18px 18px}
+      body.vC .hero{min-height:680px}
+      body.vC .hero-copy{min-height:100svh;padding:104px 18px 168px}
+      body.vC .hero-art{min-height:100svh;background-size:auto 100%;background-position:68% center;background-color:#ead7bd}
+      body.vC .hero h1{font-size:clamp(31px,8.6vw,42px)!important;letter-spacing:-.09em;white-space:nowrap}
+      body.vC .hero-copy{width:calc(100% - 36px);max-width:760px;margin:0 0 0 18px;padding:190px 0 108px;justify-content:center}
+      body.vC .hero p{max-width:25ch}
+      body.vC .meta{margin-top:14px;flex-wrap:wrap}
+      body.vC .meta span{height:36px}
+      body.vC .hero-art .art-title,body.vC .hero-art .art-foot{display:none}
+      body.vC .art-title{font-size:24px;padding:10px 12px 12px}
+      body.vC .art-foot{font-size:10px;padding:8px 10px}
+    }
+
+    /* Gentle interaction layer: movement and feedback support the nutrition challenge. */
+    @keyframes foodReveal{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+    @keyframes artReveal{from{opacity:.35;transform:scale(1.035)}to{opacity:1;transform:scale(1)}}
+    @keyframes questionReveal{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+    @keyframes mealDrift{from{background-position:54% center}to{background-position:59% center}}
+    @keyframes stampFloat{0%,100%{transform:rotate(2deg) translateY(0)}50%{transform:rotate(1deg) translateY(-7px)}}
+    @keyframes tagGlow{0%,100%{box-shadow:0 12px 28px rgba(70,35,15,.16)}50%{box-shadow:0 16px 34px rgba(70,35,15,.23)}}
+    @keyframes buttonBreath{0%,100%{box-shadow:0 10px 22px rgba(94,37,17,.25)}50%{box-shadow:0 14px 30px rgba(94,37,17,.36)}}
+    body.vC .hero-art{animation:artReveal 1s cubic-bezier(.2,.75,.25,1) both;transition:transform .6s ease-out}
+    @media(min-width:721px){body.vC .hero-art{animation:artReveal 1s cubic-bezier(.2,.75,.25,1) both,mealDrift 18s ease-in-out 1s infinite alternate}}
+    body.vC .hero-copy > *{animation:foodReveal .7s cubic-bezier(.2,.75,.25,1) both}
+    body.vC .hero-copy > :nth-child(1){animation-delay:.08s}
+    body.vC .hero-copy > :nth-child(2){animation-delay:.16s}
+    body.vC .hero-copy > :nth-child(3){animation-delay:.24s}
+    body.vC .hero-copy > :nth-child(4){animation-delay:.32s}
+    body.vC .hero-copy > :nth-child(5){animation-delay:.4s}
+    body.vC .meta span{transition:transform .2s ease,box-shadow .2s ease}
+    body.vC .meta span{animation:tagGlow 4.8s ease-in-out infinite}
+    body.vC .meta span:nth-child(2){animation-delay:.8s}
+    body.vC .meta span:nth-child(3){animation-delay:1.6s}
+    body.vC .meta span:hover{transform:translateY(-4px)!important;box-shadow:0 14px 28px rgba(70,35,15,.2)}
+    body.vC .hero .primary{position:relative;overflow:hidden;transition:transform .2s ease,box-shadow .2s ease}
+    body.vC .hero .primary:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 14px 28px rgba(94,37,17,.28)!important}
+    body.vC .hero .primary:active{transform:translateY(0) scale(.98)}
+    body.vC .hero .primary{animation:buttonBreath 4s ease-in-out infinite}
+    body.vC .art-stamp{animation:stampFloat 5s ease-in-out infinite}
+    body.vC .answer{transition:transform .2s ease,background .2s ease,border-color .2s ease,opacity .2s ease}
+    body.vC .answer.picked{transform:translateX(6px)}
+    body.vC .question.question-in{animation:questionReveal .4s ease both}
+    body.vC .feedback.show{animation:foodReveal .38s ease both}
+    body.vC .result.result-reveal{animation:foodReveal .55s ease both}
+    body.vC .home-return{flex-basis:auto!important}
+    @media(max-width:720px){body.vC .result-actions .home-return{flex:1;min-width:0}}
+    @media(prefers-reduced-motion:reduce){
+      body.vC .hero-art,body.vC .hero-copy > *,body.vC .question.question-in,body.vC .feedback.show,body.vC .result.result-reveal{animation:none!important}
+      body.vC .hero-art,body.vC .meta span,body.vC .answer,body.vC .hero .primary{transition:none!important}
+      body.vC .meta span,body.vC .hero .primary,body.vC .art-stamp{animation:none!important}
+    }
+  </style>
+</head>
+<body class="vC">
+  <main class="app"><div class="shell">
+    <header class="topbar"><div class="brand"><div class="crest">食</div><div><b>吉林大学 · 食品科学与工程学院</b><span>营养与健康科普活动</span></div></div><div class="tag">互动 02 · 现场挑战</div></header>
+    <section class="home" id="home"><div class="hero"><div class="hero-copy"><div class="eyebrow">Nutrition Challenge / 2026</div><h1>营养素消化<br><em>对错大挑战</em></h1><p>从食品科学与营养学的日常问题出发，随机抽取 5 道题，测测你的“消化吸收力”。答对 3 题及以上，即可参与现场抽奖；答错也没关系，马上带走一个有用的知识点。</p><div class="meta"><span>约 2 分钟</span><span>每次随机 5 题</span><span>现场抽奖</span></div><button class="primary" style="margin-top:30px;width:max-content" onclick="startGame()">开始挑战　→</button></div><div class="hero-art"><div class="art-label">JLU · FOOD SCIENCE</div><div class="art-title">把知识<br>吃进生活里</div><div class="art-note">今天的观察：<br>酸甜、温度与时间，都会改变食物里的营养。</div><div class="art-stamp">BALANCED PLATE<br>营养配色</div><div class="orbit"><div class="molecule"><i class="atom a1"></i><i class="atom a2"></i><i class="atom a3"></i></div></div><div class="art-foot">营养素理化性质 · 消化吸收影响因素</div></div></div></section>
+    <section class="game" id="game"><div class="game-card"><img class="quiz-mascot" src="nutrition-student-v5.png" alt="食品科学专业学生轻写实插画角色，手持营养记录板"><div class="game-head"><div class="progress-wrap"><div class="progress-label"><span id="qLabel">第 1 题 / 共 5 题</span><span id="progressPct">20%</span></div><div class="progress"><i id="progressBar" style="width:20%"></i></div></div><div class="score">得分 <span id="score">0</span></div></div><div class="question-kicker">生活营养判断题</div><h2 class="question" id="question"></h2><div class="answers" id="answers"></div><div class="feedback" id="feedback"><h3 id="feedbackTitle"></h3><p id="feedbackText"></p><button class="primary next" id="nextBtn" onclick="nextQuestion()">下一题　→</button></div><div class="hint">选择一个答案后，会立即看到原理小贴士</div></div></section>
+    <section class="result" id="result"><div class="result-card"><img class="result-visual" src="nutrition-result-v3.png" alt="食品营养挑战成功透明背景插图"><div class="medal" id="medal">FIELD NOTE</div><h2 id="resultTitle">挑战完成！</h2><p id="resultDesc"></p><div class="result-score"><span id="finalScore">0</span><small style="font-size:18px;color:var(--muted)"> / 5</small></div><div class="draw-box" id="drawBox"><b>恭喜获得抽奖资格</b><span>请将本页面出示给现场志愿者，领取一次抽奖机会。好运正在路上！</span></div><div class="result-actions"><button class="primary" onclick="draw()">查看抽奖提示</button><button class="secondary" onclick="restart()">再来一次</button><button class="secondary home-return" onclick="goHome()">返回主页面</button></div></div></section>
+  </div></main>
+  <script>
+    const questionBank=[
+      {q:'空腹可以喝牛奶吗？',a:['不可以，空腹喝一定会伤胃','可以，是否空腹主要看个人耐受情况','只有早餐前喝才可以','不可以，牛奶会直接变成脂肪'],c:1,why:'多数人空腹喝牛奶并无问题。乳糖不耐受者可能出现腹胀、腹泻，可改为少量多次或选择低乳糖产品。'},
+      {q:'维生素 C 怕高温吗？',a:['不怕，高温反而能帮助吸收','怕，长时间高温加热会造成一定损失','只怕冷，不怕热','只有和牛奶一起加热才会损失'],c:1,why:'维生素 C 是水溶性维生素，怕热、怕氧化。蔬果尽量新鲜食用，烹调时缩短加热时间。'},
+      {q:'“主食吃多只会长胖”，这个说法对吗？',a:['对，主食是长胖的唯一原因','对，米饭的热量比油还高','不完全对，关键是总能量与搭配','不对，主食完全不会影响体重'],c:2,why:'体重变化取决于长期能量收支。主食提供碳水化合物，合理摄入并搭配蛋白质、蔬菜，才是更稳妥的吃法。'},
+      {q:'熬夜后，最应该“猛补”的是？',a:['一杯高糖饮料','大量维生素片','均衡饮食与充足睡眠','只吃肉，不吃主食'],c:2,why:'没有一种营养素能抵消熬夜的影响。规律作息、均衡饮食、适度补水，比“猛补”某一种营养素更重要。'},
+      {q:'膳食纤维主要在哪个部位发挥作用？',a:['口腔，帮助牙齿咀嚼','小肠，直接被大量吸收','大肠，影响肠道菌群与排便','肝脏，转化成维生素'],c:2,why:'膳食纤维在小肠难以被消化吸收，进入大肠后可被部分发酵，并帮助增加粪便体积、促进肠道健康。'},
+      {q:'哪一种烹调方式通常更能减少蔬菜中维生素 C 的损失？',a:['长时间煲煮','短时间快炒或蒸制','反复加热','切碎后长时间浸泡'],c:1,why:'缩短加热时间、减少与水接触，有助于减少水溶性维生素 C 的流失。蔬菜不宜切碎后长时间泡水。'},
+      {q:'蛋白质的消化从哪里开始？',a:['口腔','胃','大肠','肾脏'],c:1,why:'胃中的胃蛋白酶在酸性环境下开始发挥作用，随后蛋白质在小肠内被进一步分解为氨基酸等小分子。'},
+      {q:'吃富含铁的食物时，搭配哪种食物有助于非血红素铁的吸收？',a:['富含维生素 C 的水果','浓茶','高糖饮料','大量膳食纤维补充剂'],c:0,why:'维生素 C 可帮助维持铁的可吸收形态。柑橘、猕猴桃、彩椒等食物适合与植物性铁来源搭配。'},
+      {q:'为什么咀嚼充分有助于消化？',a:['让食物更甜','增大食物与消化液接触面积','让胃酸停止分泌','让所有营养素直接进入血液'],c:1,why:'咀嚼会把食物机械性切碎并与唾液混合，增大与后续消化液接触的面积，但并不会让所有营养素直接进入血液。'},
+      {q:'脂溶性维生素 A、D、E、K 的共同特点是？',a:['只能溶于水','容易随尿液大量排出','通常需要脂肪参与吸收','遇到高温一定全部失效'],c:2,why:'脂溶性维生素通常需要膳食脂肪帮助吸收，也更容易在体内储存，因此补充剂不能随意超量。'},
+      {q:'“果汁可以完全代替水果”，这个说法对吗？',a:['对，果汁营养完全相同','不完全对，果汁常损失膳食纤维且更容易喝多','对，果汁的维生素更多','不对，水果和果汁都没有营养'],c:1,why:'完整水果保留了更多膳食纤维，咀嚼也更有饱腹感。果汁即使不额外加糖，也更容易在短时间内摄入较多糖分。'},
+      {q:'益生菌饮品越酸，说明其中益生菌越多吗？',a:['一定是','不一定，酸味与发酵产物、配方等有关','只要酸就没有益生菌','酸味越强，营养越高'],c:1,why:'酸味可能来自乳酸、果酸或配方，并不能单独代表益生菌数量。挑选时还要看菌株、活菌数和储存条件。'},
+      {q:'食物中的淀粉经过消化后，主要分解为哪类小分子？',a:['氨基酸','葡萄糖等单糖','脂肪酸','维生素 D'],c:1,why:'淀粉属于碳水化合物，经过消化会分解成葡萄糖等小分子，随后被小肠吸收并参与供能。'},
+      {q:'高盐饮食中，哪一个做法更有助于减少钠摄入？',a:['多喝含糖饮料冲淡咸味','少用腌制食品并查看营养成分表','只吃汤里的菜','用更多酱油提鲜'],c:1,why:'腌制食品、酱料和加工食品常含较多钠。少用高盐调味品并查看标签，是更可执行的减盐方法。'},
+      {q:'膳食中加入坚果时，哪种方式更合适？',a:['把坚果当零食无限量吃','选择原味、少量食用并计入全天能量','只吃裹糖坚果','坚果可以代替所有蔬菜'],c:1,why:'坚果含有较好的脂肪酸和蛋白质，但能量密度较高，适合选择原味、少量食用，而不是无限量抓着吃。'},
+      {q:'食物中的水分对消化有什么作用？',a:['完全没有作用','帮助食物形成适宜的消化环境并参与代谢','会阻止所有营养素吸收','只能在口腔发挥作用'],c:1,why:'水参与消化液形成、营养物质运输和代谢过程。日常分次饮水即可，不必迷信“饭中不能喝水”。'},
+      {q:'乳糖不耐受者喝奶后不舒服，较合适的做法是？',a:['从此完全不碰任何乳制品','少量多次或选择低乳糖产品','一次喝更多让身体适应','用能量饮料替代牛奶'],c:1,why:'乳糖不耐受程度因人而异，可以尝试少量多次、随餐饮用或选择低乳糖/无乳糖产品，并关注钙和蛋白质来源。'}
+    ];
+    const knowledgeBank=[
+      {topic:'早餐中加入鸡蛋的主要价值',correct:'提供优质蛋白质，并增加饱腹感',wrong:['能替代所有蔬菜','能让人整天不需要喝水','蛋黄完全没有营养'],why:'鸡蛋可提供优质蛋白质及多种营养素，但仍应与主食、蔬菜和水果搭配。'},
+      {topic:'全谷物与精制谷物的区别',correct:'全谷物保留了更多麸皮、胚乳和胚芽',wrong:['全谷物一定不含能量','精制谷物完全不能消化','全谷物只适合运动员'],why:'全谷物保留更多谷物结构和膳食纤维，适合在日常主食中合理搭配。'},
+      {topic:'燕麦的营养特点',correct:'含有膳食纤维，尤其是β-葡聚糖',wrong:['只含维生素 C','完全不含碳水化合物','越甜的燕麦越健康'],why:'燕麦含β-葡聚糖等膳食纤维，选择原味、少糖产品更适合日常食用。'},
+      {topic:'鱼类在膳食中的作用',correct:'可提供蛋白质，部分鱼类还含有不饱和脂肪酸',wrong:['鱼肉完全不含脂肪','吃鱼可以代替所有豆类','鱼越大越适合天天大量吃'],why:'鱼类是优质蛋白来源，深海鱼常含较多ω-3脂肪酸，但仍要注意食物多样和适量。'},
+      {topic:'豆腐的主要营养贡献',correct:'提供植物性蛋白质，并可提供一定钙',wrong:['豆腐只含水分','豆腐能代替所有肉类和蔬菜','豆腐越硬就一定越有营养'],why:'豆腐的蛋白质质量较好，部分用含钙凝固剂制作的豆腐钙含量也较高。'},
+      {topic:'深色蔬菜通常意味着',correct:'含有较丰富的植物色素和多种微量营养素',wrong:['一定含糖量最高','一定比浅色蔬菜更难消化','只适合生吃'],why:'深绿色、橙红色等蔬菜常含叶绿素、类胡萝卜素等成分，日常应搭配不同颜色蔬菜。'},
+      {topic:'胡萝卜素转化为维生素 A 的关系',correct:'部分β-胡萝卜素可在体内转化为维生素 A',wrong:['胡萝卜吃下去就直接变成视紫红质','所有胡萝卜素都等于维生素 A','维生素 A 只能来自饮料'],why:'β-胡萝卜素是维生素 A 原，转化效率会受个体和膳食情况影响。'},
+      {topic:'钙吸收与维生素 D 的关系',correct:'维生素 D 有助于钙的吸收和利用',wrong:['维生素 D 会阻止钙吸收','钙和维生素 D 完全无关','只要补钙就不需要运动'],why:'维生素 D 参与钙磷代谢，规律户外活动、均衡饮食和适量运动都很重要。'},
+      {topic:'菠菜与豆腐同吃的理解',correct:'通常可以同吃，整体饮食搭配比单一食物禁忌更重要',wrong:['绝对不能同吃会立刻中毒','同吃会让蛋白质消失','菠菜只能和水果一起吃'],why:'正常烹调和适量食用下，菠菜与豆腐可以搭配；无需把常见食物组合简单化为“相克”。'},
+      {topic:'补铁时饮茶的影响',correct:'浓茶中的部分成分可能影响非血红素铁吸收',wrong:['浓茶能让铁吸收翻倍','茶可以代替含铁食物','饮茶能把铁变成维生素'],why:'茶多酚等成分可能影响植物性铁吸收，补铁餐与浓茶适当错开更稳妥。'},
+      {topic:'维生素 B 族的总体特点',correct:'多参与能量代谢和细胞相关反应',wrong:['都能在体内大量储存多年','只存在于水果中','越多越能抵消熬夜'],why:'多种B族维生素参与碳水化合物、脂肪和蛋白质代谢，不能替代规律作息。'},
+      {topic:'维生素 B12 的常见食物来源',correct:'肉、蛋、奶等动物性食物中较常见',wrong:['只存在于白糖中','所有蔬菜都富含 B12','饮用水是主要来源'],why:'B12天然主要存在于动物性食物，严格素食者需要关注强化食品或专业建议。'},
+      {topic:'维生素 D 的食物来源',correct:'深海鱼、蛋黄和强化食品等可提供维生素 D',wrong:['只有白米饭含维生素 D','水果汁是唯一来源','维生素 D 只来自盐'],why:'食物来源有限，部分鱼类、蛋黄和强化食品可提供维生素D，日常也要关注户外活动。'},
+      {topic:'维生素 E 的主要特点',correct:'具有抗氧化相关作用，坚果和植物油中较常见',wrong:['只存在于精制糖中','能代替所有抗氧化物质','吃得越多越能改善睡眠'],why:'维生素E参与抗氧化防御，坚果、植物油等可提供，但补充剂不宜随意超量。'},
+      {topic:'钾元素的膳食来源',correct:'新鲜蔬菜、水果、豆类和薯类等可提供钾',wrong:['只有腌菜含钾','含钾食物都不能加热','钾只存在于肉干中'],why:'蔬菜、水果、豆类和薯类都是常见钾来源，减少高盐加工食品也有助于膳食平衡。'},
+      {topic:'钠的主要膳食来源',correct:'食盐、酱料和许多加工食品',wrong:['只有水果提供钠','白开水是钠摄入的主要来源','钠只存在于甜味食品'],why:'家庭烹调盐、酱油、腌制和加工食品都可能贡献较多钠，应学会看营养标签。'},
+      {topic:'糖醇类甜味剂的理解',correct:'部分糖醇摄入过多可能引起腹胀或腹泻',wrong:['糖醇吃多少都没有影响','糖醇就是蛋白质','糖醇一定比水更补水'],why:'糖醇的代谢和吸收各有特点，过量摄入可能引起胃肠不适，应根据个人耐受适量食用。'},
+      {topic:'食品标签中“每 100 克”的意义',correct:'便于比较不同产品在统一重量下的营养含量',wrong:['代表一整包的含量','代表每一口的含量','只用于比较颜色'],why:'营养成分表常以每100克或每100毫升标示，比较产品时还要结合实际食用量。'},
+      {topic:'配料表中排在前面的成分',correct:'通常表示其在配方中的添加量相对靠前',wrong:['表示它最健康','表示它一定是维生素','表示它的颜色最深'],why:'配料表一般按加入量递减排列，不能只看宣传语，还要综合配料和营养成分表。'},
+      {topic:'“无糖”食品的正确理解',correct:'不等于没有能量，也不等于可以无限量吃',wrong:['无糖就一定低能量','无糖就没有碳水化合物','无糖食品可以代替饮水'],why:'“无糖”通常有相应标示要求，但产品仍可能含淀粉、脂肪或其他能量来源。'},
+      {topic:'食品冷藏的作用',correct:'降低温度可减缓许多微生物繁殖和部分化学变化',wrong:['冷藏能杀死所有细菌','冷藏后食物永久不会变质','冷藏可以替代加热烹调'],why:'冷藏主要是延缓变质，不是无限期保存；仍要注意保质期、密封和生熟分开。'},
+      {topic:'生熟食物分开处理的目的',correct:'减少交叉污染风险',wrong:['让食物颜色更鲜艳','提高所有维生素含量','让肉类自动熟透'],why:'刀具、砧板和容器分开使用，可减少生食材中的微生物转移到即食食品。'},
+      {topic:'剩菜剩饭再次食用前的原则',correct:'充分加热并尽快食用，保存时注意冷藏',wrong:['放在室温越久越入味','只要闻起来没味道就绝对安全','反复加热越多次越好'],why:'剩余食物应及时冷藏，再食用前充分加热，并尽量减少反复冷却和加热。'},
+      {topic:'发霉食物的处理',correct:'霉变食品不建议仅切掉霉斑后继续食用',wrong:['切掉表面就一定安全','加糖煮沸即可完全去除风险','霉点越少越适合食用'],why:'霉菌可能产生肉眼不可见的菌丝或代谢产物，简单切除和加热未必能消除风险。'},
+      {topic:'解冻食物更合适的方法',correct:'放在冷藏环境中缓慢解冻或使用安全的快速解冻方式',wrong:['长时间放在室温最安全','解冻后反复冻融更卫生','直接放在阳光下暴晒'],why:'冷藏解冻能减少表面长时间处于适宜微生物生长温度的机会，解冻后应尽快烹调。'},
+      {topic:'酸奶中的乳酸菌',correct:'发酵过程中乳酸菌可产生乳酸，使风味变酸',wrong:['乳酸菌会把所有蛋白质变成脂肪','酸味说明酸奶一定坏了','乳酸菌只负责提供甜味'],why:'乳酸菌利用乳糖等底物发酵产生乳酸，形成酸味和凝固口感，但产品仍要按标签保存。'},
+      {topic:'发酵食品的营养理解',correct:'发酵可能改变风味、质地和部分营养成分的利用方式',wrong:['发酵后所有营养素都增加','发酵食品可以无限量食用','发酵一定会去除所有盐分'],why:'发酵是复杂生物过程，影响因食品和工艺而异，不能简单理解为“发酵就一定更健康”。'},
+      {topic:'小肠在消化吸收中的作用',correct:'小肠是多种营养物质消化和吸收的重要场所',wrong:['小肠只储存食物','小肠完全不接触消化液','小肠只吸收水不吸收营养'],why:'小肠具有较大吸收面积，并接受多种消化液，是糖类、脂肪、蛋白质等消化吸收的重要部位。'},
+      {topic:'胆汁对脂肪消化的作用',correct:'胆汁可乳化脂肪，帮助脂肪与消化酶充分接触',wrong:['胆汁直接把脂肪变成蛋白质','胆汁只消化淀粉','胆汁能让所有营养素免于消化'],why:'胆汁中的胆盐能帮助脂肪乳化，增加接触面积，但胆汁本身不是主要脂肪消化酶。'},
+      {topic:'胰液在消化中的作用',correct:'含有多种消化酶，可参与糖类、蛋白质和脂肪消化',wrong:['只负责储存胆汁','只在口腔分泌','完全不能参与脂肪消化'],why:'胰液含多种消化酶，进入小肠后参与多类营养物质的分解。'},
+      {topic:'消化酶的作用',correct:'加快特定营养物质的分解反应',wrong:['把营养物质变成矿物质','让所有食物无需咀嚼','消化酶越多越适合盲目补充'],why:'消化酶具有一定专一性，帮助大分子营养物质分解为更易吸收的小分子。'},
+      {topic:'乳糖酶不足时的常见表现',correct:'饮用含乳糖食品后可能出现腹胀、排气或腹泻',wrong:['一定会发烧','一定会立刻长胖','视力会马上下降'],why:'乳糖消化不足时，未被充分消化的乳糖进入结肠，可能引起部分人胃肠道不适。'},
+      {topic:'餐后适量活动的理解',correct:'轻松散步等适度活动通常比立即剧烈运动更合适',wrong:['饭后必须立刻跑步','饭后完全不能站立','运动可以代替所有饮食管理'],why:'餐后可根据个人情况进行轻松活动，剧烈运动和个体耐受需要谨慎安排。'},
+      {topic:'膳食纤维增加时的饮水',correct:'逐步增加膳食纤维并保持适量饮水更合适',wrong:['吃纤维越多越不需要喝水','膳食纤维会自动补足水分','只喝饮料就能替代饮水'],why:'突然大量增加纤维可能引起胀气，逐步增加并配合适量饮水有助于适应。'},
+      {topic:'可溶性膳食纤维的特点',correct:'部分可溶性纤维能吸水形成黏性结构',wrong:['完全不能与水接触','只存在于肉类中','一定会被小肠完全吸收'],why:'燕麦β-葡聚糖、果胶等属于常见可溶性纤维，吸水性和发酵性各有特点。'},
+      {topic:'不溶性膳食纤维的作用',correct:'可增加粪便体积并帮助促进肠道蠕动',wrong:['能直接转化成维生素 D','会让所有食物变成糖','只存在于牛奶中'],why:'不溶性纤维多存在于全谷物、蔬菜等，有助于增加粪便体积，但也需配合饮水。'},
+      {topic:'蛋白质互补的意义',correct:'搭配不同植物性蛋白来源可改善氨基酸组成',wrong:['让蛋白质变成维生素','只适用于运动员','意味着可以不吃蔬菜'],why:'谷物、豆类等不同食物的氨基酸特点可以互补，食物多样化有助于提高膳食质量。'},
+      {topic:'运动后补充蛋白质的原则',correct:'结合总能量、运动量和全天饮食合理安排',wrong:['越多越好且不需要碳水化合物','一瓶蛋白粉能替代全部饮食','不运动也必须大量补充'],why:'蛋白质需求与体重、活动量和全天膳食有关，不应把补充剂当作均衡饮食的替代品。'},
+      {topic:'脂肪的正确营养观',correct:'脂肪是能量和必需脂肪酸来源，也要注意种类和总量',wrong:['脂肪完全没有营养','所有脂肪都一样','吃脂肪越少越健康'],why:'脂肪参与细胞结构和脂溶性维生素吸收，应关注脂肪来源、种类和整体摄入量。'},
+      {topic:'不饱和脂肪酸的常见来源',correct:'植物油、坚果、种子和部分鱼类中较常见',wrong:['只存在于白糖中','来源只有肥肉','不饱和就完全没有能量'],why:'不饱和脂肪酸广泛存在于植物油、坚果和鱼类等食物中，但仍需适量。'},
+      {topic:'反式脂肪酸的膳食管理',correct:'少选含部分氢化油脂等来源的加工食品',wrong:['反式脂肪越多越好','只要是植物油就一定没有反式脂肪','反式脂肪能替代蛋白质'],why:'反式脂肪摄入宜尽量少，购买加工食品时可以关注配料表和营养标签。'},
+      {topic:'食物能量密度的概念',correct:'单位重量食物所含能量的多少',wrong:['食物颜色的深浅','食物中水分的温度','每种食物的维生素数量'],why:'蔬菜水果通常水分和纤维较多、能量密度较低；坚果和油脂能量密度较高，适合控制份量。'},
+      {topic:'合理控制零食的做法',correct:'看份量和营养标签，把零食计入全天饮食',wrong:['零食不算能量','只要包装小就可以无限吃','零食能代替正餐'],why:'零食可以是膳食的一部分，但要注意食用频率、份量、糖盐脂肪含量以及对正餐的影响。'},
+      {topic:'果蔬颜色多样化的意义',correct:'不同颜色常对应不同植物色素和植物化学物',wrong:['颜色越多就一定没有能量','只能吃一种颜色才能吸收','颜色与营养完全无关'],why:'颜色多样化有助于摄入不同植物成分，也能让膳食更加丰富。'},
+      {topic:'“天然”食品标签的理解',correct:'天然不等于一定低糖、低盐或低能量',wrong:['只要天然就可以无限量吃','天然就不需要看保质期','天然代表没有任何过敏风险'],why:'“天然”是描述来源或加工方式的宣传语之一，仍需要关注配料、营养和食用安全。'},
+      {topic:'过敏原标识的作用',correct:'帮助对特定食物过敏的人识别需要避开的成分',wrong:['代表该食品一定不健康','只用于标记热量','能保证所有人都不会过敏'],why:'过敏原标识属于食品信息的重要部分，过敏人群应结合自身情况认真查看。'},
+      {topic:'食品添加剂的基本理解',correct:'合规使用的食品添加剂需要符合相应标准和使用范围',wrong:['所有添加剂都等于有毒','天然食品绝不含任何添加剂','添加剂越多越营养'],why:'食品添加剂具有改善色香味、保存或加工等作用，关键在于是否合规、适量和按标准使用。'},
+      {topic:'饮料中的咖啡因',correct:'咖啡、茶和部分能量饮料可能含有咖啡因',wrong:['所有饮料都不含咖啡因','咖啡因就是维生素','咖啡因能替代睡眠'],why:'咖啡因具有兴奋作用，儿童、孕期人群和对其敏感者需特别关注摄入量与时间。'},
+      {topic:'运动饮料的适用场景',correct:'长时间、高强度运动时才可能更有针对性',wrong:['日常喝越多越健康','可以代替白开水和正餐','只要口渴就必须喝'],why:'普通日常活动通常饮水即可，运动饮料含糖和电解质，适用场景与运动时长、强度有关。'},
+      {topic:'早餐只喝一杯含糖饮料的问题',correct:'可能糖分较高、饱腹感不足且营养结构单一',wrong:['能提供全天所有营养','比均衡早餐更理想','不会影响全天能量摄入'],why:'早餐可搭配主食、蛋白质食物和蔬果，单独依赖含糖饮料容易造成结构单一。'},
+      {topic:'晚餐过量与睡眠的关系',correct:'过饱、过油可能让部分人感到消化负担或影响睡眠',wrong:['晚餐越晚越适合吃很多','吃得越油越容易入睡','晚餐与睡眠完全无关'],why:'个体差异存在，但规律、适量的晚餐以及与睡眠保持合理间隔通常更舒适。'},
+      {topic:'减重时主食的处理',correct:'无需完全戒掉主食，应关注份量、种类和整体能量',wrong:['必须完全不吃碳水','只吃水果就能替代主食','主食越少越健康'],why:'主食是重要碳水化合物来源，减重更重视整体能量、食物质量和长期可持续性。'},
+      {topic:'体重管理中的饮食记录',correct:'有助于发现份量、零食和饮料等隐性摄入',wrong:['记录会让食物没有营养','只能记录水果','记录后就不需要运动'],why:'适度记录能帮助了解真实摄入和行为模式，但不必追求过度精确或产生焦虑。'},
+      {topic:'营养补充剂的使用原则',correct:'先评估实际需要，不能把补充剂当成均衡饮食替代品',wrong:['剂量越大越有效','所有人都需要同一种补充剂','补充剂可以代替睡眠'],why:'补充剂应结合膳食、健康状况和专业建议，脂溶性维生素等尤其不宜随意超量。'},
+      {topic:'食物多样化的意义',correct:'有助于获得不同种类的营养素和植物成分',wrong:['每天只吃一种食物最好','食物越少越容易营养均衡','多样化只指多吃零食'],why:'食物多样化是均衡膳食的重要基础，可以在谷薯、蔬果、奶豆、鱼禽肉蛋等类别间合理搭配。'}
+    ];
+    const questionForms=[f=>`关于“${f.topic}”，哪种说法更准确？`,f=>`在日常饮食中，如何理解“${f.topic}”？`,f=>`营养学判断：${f.topic}。`,f=>`想吃得更科学，关于“${f.topic}”应选择？`];
+    const expandedQuestionBank=questionBank.concat(knowledgeBank.flatMap((fact,fi)=>questionForms.map((make,vi)=>{const raw=[fact.correct,...fact.wrong],shift=(fi+vi)%4,a=raw.slice(shift).concat(raw.slice(0,shift));return {q:make(fact),a,c:(4-shift)%4,why:fact.why}})));
+    let idx=0,score=0,answered=false,questions=[];
+    function shuffle(list){return [...list].sort(()=>Math.random()-0.5)}
+    function startGame(){idx=0;score=0;questions=shuffle(expandedQuestionBank).slice(0,5);document.getElementById('home').style.display='none';document.getElementById('result').style.display='none';document.getElementById('game').style.display='block';renderQ();scrollTo({top:0,behavior:'smooth'})}
+    function renderQ(){answered=false;const x=questions[idx];document.getElementById('qLabel').textContent='第 '+(idx+1)+' 题 / 共 '+questions.length+' 题';document.getElementById('progressPct').textContent=Math.round((idx+1)/questions.length*100)+'%';document.getElementById('progressBar').style.width=((idx+1)/questions.length*100)+'%';document.getElementById('score').textContent=score;const qel=document.getElementById('question');qel.classList.remove('question-in');qel.textContent=x.q;void qel.offsetWidth;qel.classList.add('question-in');document.getElementById('feedback').className='feedback';document.getElementById('answers').innerHTML=x.a.map((t,i)=>'<button class="answer" onclick="answer('+i+')"><span class="letter">'+String.fromCharCode(65+i)+'</span>'+t+'</button>').join('')}
+    function answer(i){if(answered)return;answered=true;const x=questions[idx], btns=[...document.querySelectorAll('.answer')];btns[i].classList.add('picked');btns.forEach((b,n)=>{if(n===x.c)b.classList.add('correct');else if(n===i)b.classList.add('wrong');else b.classList.add('dim')});const ok=i===x.c;if(ok)score++;document.getElementById('score').textContent=score;const f=document.getElementById('feedback');f.className='feedback show '+(ok?'ok':'bad');document.getElementById('feedbackTitle').textContent=ok?'答对啦！':'这题容易混淆';document.getElementById('feedbackText').textContent=(ok?'知识点巩固：':'志愿者科普：')+x.why;document.getElementById('nextBtn').textContent=idx===questions.length-1?'查看结果　→':'下一题　→'}
+    function nextQuestion(){if(!answered)return;if(idx<questions.length-1){idx++;renderQ()}else{showResult()}}
+    function showResult(){document.getElementById('game').style.display='none';const result=document.getElementById('result');result.classList.remove('result-reveal');result.style.display='block';void result.offsetWidth;result.classList.add('result-reveal');document.getElementById('finalScore').textContent=score;const eligible=score>=3;const visual=document.querySelector('.result-visual');visual.src=eligible?'nutrition-result-v3.png':'nutrition-result-v3.png';visual.alt=eligible?'均衡膳食与营养挑战成功透明背景插图':'营养学习记录与再次挑战透明背景插图';document.getElementById('medal').textContent=eligible?'FIELD NOTE':'FIELD NOTE';document.getElementById('resultTitle').textContent=eligible?'太棒了，营养小达人！':'挑战完成，继续积累！';document.getElementById('resultDesc').textContent=eligible?'你已经掌握了不少基础营养知识，满足抽奖条件！':'再记住几个关键原理，下次一定能解锁抽奖资格。';document.getElementById('drawBox').className='draw-box '+(eligible?'show':'')}
+    function draw(){const box=document.getElementById('drawBox');if(score>=3)box.className='draw-box show';else{box.className='draw-box show';box.innerHTML='<b>再挑战一次吧</b><span>答对 3 题及以上即可参与抽奖。记住：均衡饮食和规律作息，是最可靠的“营养补剂”。</span>'}}
+    function restart(){document.getElementById('result').style.display='none';startGame()}
+    function goHome(){document.getElementById('game').style.display='none';document.getElementById('result').style.display='none';document.getElementById('home').style.display='block';window.scrollTo({top:0,behavior:'smooth'})}
+    const hero=document.querySelector('.hero'),heroArt=document.querySelector('.hero-art');
+    if(hero&&heroArt&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches){hero.addEventListener('pointermove',e=>{if(e.pointerType==='touch')return;const r=hero.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;heroArt.style.transform='translate3d('+(-x*8)+'px,'+(-y*5)+'px,0) scale(1.01)'});hero.addEventListener('pointerleave',()=>{heroArt.style.transform=''})}
+  </script>
+</body>
+</html>
