@@ -1,8 +1,7 @@
 <!doctype html>
-<html lang="zh-CN">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+<html lang="zh-CN"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>营养素消化 · 对错大挑战</title>
   <style>
     :root{--ink:#14233b;--muted:#6e7c91;--paper:#fffdf8;--line:#e7e8ec;--accent:#b51e32;--accent2:#f6c15b;--ok:#2f9b6a;--bad:#c85b50;--shadow:0 18px 60px #16233b16;--radius:24px}
@@ -283,7 +282,19 @@
       body.vC .hero-art,body.vC .meta span,body.vC .answer,body.vC .hero .primary{transition:none!important}
       body.vC .meta span,body.vC .hero .primary,body.vC .art-stamp{animation:none!important}
     }
-  </style>
+    /* Long-question safety: reserve a clear column for the student illustration. */
+    @media(min-width:721px){
+      body.vC .game-card{padding-right:184px}
+      body.vC .quiz-mascot{right:-48px;top:54px;z-index:1}
+      body.vC .question{position:relative;z-index:2;white-space:normal!important;max-width:100%!important}
+      body.vC .answers,body.vC .feedback,body.vC .hint{position:relative;z-index:2}
+    }
+    @media(max-width:720px){
+      body.vC .quiz-mascot{z-index:0;opacity:.14;right:-2px;top:34px}
+      body.vC .game-card > :not(.quiz-mascot){position:relative;z-index:2}
+      body.vC .question{background:rgba(249,251,255,.82);border-radius:12px;padding:4px 8px}
+    }
+    </style>
 </head>
 <body class="vC">
   <main class="app"><div class="shell">
@@ -384,5 +395,6 @@
     const hero=document.querySelector('.hero'),heroArt=document.querySelector('.hero-art');
     if(hero&&heroArt&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches){hero.addEventListener('pointermove',e=>{if(e.pointerType==='touch')return;const r=hero.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;heroArt.style.transform='translate3d('+(-x*8)+'px,'+(-y*5)+'px,0) scale(1.01)'});hero.addEventListener('pointerleave',()=>{heroArt.style.transform=''})}
   </script>
-</body>
-</html>
+
+
+</body><div id="codex-browser-sidebar-comments-root" style="position: fixed; inset: 0px; pointer-events: none; z-index: 2147483647;"></div></html>
